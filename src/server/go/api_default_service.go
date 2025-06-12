@@ -15,7 +15,7 @@ import (
 	"net/http"
 	"errors"
 	"time"
-	"github.com/Desolitto/Avito-trainee-assignment-spring-2025/server/go/auth"
+	"github.com/Desolitto/Avito-trainee-assignment-spring-2025/internal/auth"
 )
 
 // DefaultAPIService is a service that implements the logic for the DefaultAPIServicer
