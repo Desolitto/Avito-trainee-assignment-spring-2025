@@ -2,12 +2,20 @@ FROM golang:1.22.3
 
 WORKDIR /app
 
+# Копируем go.mod и go.sum корневого проекта
 COPY go.mod go.sum ./
+
+# Копируем go.mod и go.sum сервера
+COPY server/go.mod server/go.sum ./server/
+
+# Загружаем зависимости
 RUN go mod download
 
+# Копируем весь проект
 COPY . .
 
-RUN go build -o backend cmd/app/main.go
+# Собираем бэкенд
+RUN go build -o backend ./cmd/main.go
 
 EXPOSE 8081
 
