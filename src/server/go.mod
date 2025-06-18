@@ -1,9 +1,12 @@
 module github.com/Desolitto/Avito-trainee-assignment-spring-2025/server
 
-go 1.18
+go 1.22.3
 
-require github.com/gorilla/mux v1.8.0
 require (
-    github.com/Desolitto/Avito-trainee-assignment-spring-2025/internal v0.0.0
+	github.com/Desolitto/Avito-trainee-assignment-spring-2025/internal/auth v0.0.0
+	github.com/gorilla/mux v1.8.1
 )
-replace github.com/Desolitto/Avito-trainee-assignment-spring-2025/internal => ../../internal
+
+require github.com/golang-jwt/jwt/v5 v5.2.2 // indirect
+
+replace github.com/Desolitto/Avito-trainee-assignment-spring-2025/internal/auth => ../internal/auth

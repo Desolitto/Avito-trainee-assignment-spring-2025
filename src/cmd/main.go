@@ -29,11 +29,18 @@ func main() {
 			Methods(route.Method).
 			Path(route.Pattern).
 			Handler(handler)
-	}
-
+	
 	// Middleware для логирования (опционально)
 	router.Use(loggingMiddleware)
 
+	}
+    // Распечатаем зарегистрированные маршруты
+    router.Walk(func(route *mux.Route, router *mux.Router, ancestors []*mux.Route) error {
+        path, _ := route.GetPathTemplate()
+        methods, _ := route.GetMethods()
+        log.Printf("Route: %v, Methods: %v", path, methods)
+        return nil
+    })
 	// Настройка сервера
 	server := &http.Server{
 		Addr:    ":8081",

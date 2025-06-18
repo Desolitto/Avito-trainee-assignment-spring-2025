@@ -15,8 +15,21 @@ import (
 	"net/http"
 	"errors"
 	"time"
+	"log"
+	"fmt"
 	"github.com/Desolitto/Avito-trainee-assignment-spring-2025/internal/auth"
+
+
 )
+var allowedRoles = map[string]bool{
+    "employee":   true,
+    "moderator":  true,
+    "admin":      true,
+}
+
+func isValidRole(role string) bool {
+    return allowedRoles[role]
+}
 
 // DefaultAPIService is a service that implements the logic for the DefaultAPIServicer
 // This service should implement the business logic for every endpoint for the DefaultAPI API.
@@ -30,16 +43,45 @@ func NewDefaultAPIService() *DefaultAPIService {
 }
 
 // DummyLoginPost - Получение тестового токена
-func (s *DefaultAPIService) DummyLoginPost(ctx context.Context, dummyLoginPostRequest DummyLoginPostRequest) (ImplResponse, error) {
-    role := dummyLoginPostRequest.Role
-    token, err := auth.GenerateJWT(role)
-    if err != nil {
-        return Response(http.StatusInternalServerError, Error{Message: "Failed to generate token"}), nil
+func (s *DefaultAPIService) DummyLoginPost(ctx context.Context, req DummyLoginPostRequest) (ImplResponse, error) {
+    // Проверка на пустую роль
+    if req.Role == "" {
+        return Response(http.StatusBadRequest, Error{
+            Message: "Role is required. Allowed roles: employee, moderator, admin",
+        }), nil
     }
 
-    // Возвращаем JSON с ключом "token"
-    respBody := map[string]string{"token": token}
-    return Response(http.StatusOK, respBody), nil
+    // Проверка роли с использованием новой функции
+    if !isValidRole(req.Role) {
+        return Response(http.StatusBadRequest, Error{
+            Message: fmt.Sprintf("Invalid role. Allowed roles: %v", 
+                getValidRoles()),
+        }), nil
+    }
+
+    // Генерация токена
+    token, err := auth.GenerateJWT(req.Role)
+    if err != nil {
+        log.Printf("Token generation error for role %s: %v", req.Role, err)
+        return Response(http.StatusInternalServerError, Error{
+            Message: "Failed to generate token",
+        }), nil
+    }
+
+    // Возвращаем JSON с токеном
+    return Response(http.StatusOK, map[string]string{
+        "token": token,
+    }), nil
+}
+
+
+// Вспомогательная функция для получения списка допустимых ролей
+func getValidRoles() []string {
+    roles := make([]string, 0, len(allowedRoles))
+    for role := range allowedRoles {
+        roles = append(roles, role)
+    }
+    return roles
 }
 
 // RegisterPost - Регистрация пользователя

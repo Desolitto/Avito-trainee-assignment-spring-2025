@@ -3,8 +3,7 @@ module github.com/Desolitto/Avito-trainee-assignment-spring-2025
 go 1.22.3
 
 require (
-	github.com/Desolitto/Avito-trainee-assignment-spring-2025/server v0.0.0
-	github.com/golang-jwt/jwt/v5 v5.2.2
+	github.com/Desolitto/Avito-trainee-assignment-spring-2025/server v0.0.0-00010101000000-000000000000
 	github.com/gorilla/mux v1.8.1
 	github.com/jmoiron/sqlx v1.4.0
 	github.com/lib/pq v1.10.9
@@ -12,8 +11,10 @@ require (
 )
 
 require (
+	github.com/Desolitto/Avito-trainee-assignment-spring-2025/internal/auth v0.0.0 // indirect
 	github.com/fsnotify/fsnotify v1.8.0 // indirect
 	github.com/go-viper/mapstructure/v2 v2.2.1 // indirect
+	github.com/golang-jwt/jwt/v5 v5.2.2 // indirect
 	github.com/pelletier/go-toml/v2 v2.2.3 // indirect
 	github.com/sagikazarmark/locafero v0.7.0 // indirect
 	github.com/sourcegraph/conc v0.3.0 // indirect
@@ -28,4 +29,7 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-replace github.com/Desolitto/Avito-trainee-assignment-spring-2025/server => ./server
+replace (
+	github.com/Desolitto/Avito-trainee-assignment-spring-2025/internal/auth => ./internal/auth
+	github.com/Desolitto/Avito-trainee-assignment-spring-2025/server => ./server
+)

@@ -1,12 +1,15 @@
 FROM golang:1.22.3
 
 WORKDIR /app
-
+ENV LOG_LEVEL=debug
 # Копируем go.mod и go.sum корневого проекта
 COPY go.mod go.sum ./
 
 # Копируем go.mod и go.sum сервера
 COPY server/go.mod server/go.sum ./server/
+
+# Копируем go.mod внутреннего модуля auth
+COPY internal/auth/go.mod internal/auth/go.sum ./internal/auth/
 
 # Загружаем зависимости
 RUN go mod download
